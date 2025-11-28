@@ -1,0 +1,35 @@
+// Scripts de clase - Noviembre 27 de 2025  
+// Curso de Tópicos Avanzados de base de datos - UPB 202520
+// Juan Dario Rodas - juand.rodasm@upb.edu.co
+
+// Proyecto: Pigmentos Inorgánicos
+// Representación del modelo de datos en DBML
+
+
+Table "pigmentos" {
+  "id" uuid [pk, default: `gen_random_uuid()`, note: 'ID del pigmento']
+  "nombre" text [not null, note: 'Nombre comercial del pigmento']
+  "formula_quimica" text [not null, note: 'Fórmula química del pigmento']  
+  "numero_ci" text [not null, note: 'Código CI del Pigmento.']  
+  "familia_quimica_id" uuid [not null, note: ' Identificador único de la familia química']
+  "color_id" uuid [not null, note: 'Identificador único del color principal']
+  Note: 'Registro de los pigmentos inorgánicos'
+}
+
+Table "colores" {
+  "id" uuid [pk, default: `gen_random_uuid()`, note: 'Identificador único del color']
+  "nombre" text [not null, note: 'Nombre del color']
+  "representacion_hexadecimal" text [not null, note: 'Representación del color para visualización web']
+  Note: 'Registro de los colores'
+}
+
+Table "familias_quimicas" {
+  "id" uuid [pk, default: `gen_random_uuid()`, note: 'Identificador único de la familia química']
+  "nombre" text [not null, note: 'Nombre de la familia química']
+  "composicion" text [not null, note: 'Detalle de la composición de la familia química']
+  Note: 'Registro de los colores'
+}
+
+
+Ref:"colores"."id" < "pigmentos"."color_id"
+Ref:"familias_quimicas"."id" < "pigmentos"."familia_quimica_id"  
