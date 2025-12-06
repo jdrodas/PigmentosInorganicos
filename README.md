@@ -68,12 +68,11 @@ Controllers → Services → Repositories (via Interfaces) → DB Context
 
 ## Stack Tecnológico
 
-- **Framework**: .NET 19.x
+- **Framework**: .NET 10.x
 - **Base de Datos**: PostgreSQL 17.x / MongoDB 8.x
-- **ORM**: Dapper (micro-ORM) 2.1.x
-- **Documentación**: Swagger/OpenAPI
-- **Identificadores**: UUID/GUID para seguridad en versión relacional
-- **Driver DB Relacional**: Npgsql 9.0.3
+- **ORM**: Dapper (micro-ORM) 2.1.66
+- **Documentación**: Swagger/OpenAPI usando Swashbuckle 10.0.1
+- **Driver DB Relacional**: Npgsql 10.0.0
 
 ## Endpoints API
 
