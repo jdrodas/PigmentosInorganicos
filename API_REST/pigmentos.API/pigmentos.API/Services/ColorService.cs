@@ -123,6 +123,38 @@ namespace pigmentos.API.Services
             return colorExistente;
         }
 
+        public async Task<string> RemoveAsync(Guid colorId)
+        {
+            Color unColor = await _colorRepository
+                .GetByIdAsync(colorId);
+
+            if (unColor.Id == Guid.Empty)
+                throw new EmptyCollectionException($"Color no encontrado con el id {colorId}");
+
+            //Validar si el color tiene pigmentos asociados
+            var pigmentosAsociados = await _pigmentoRepository
+                .GetAllByColorIdAsync(colorId);
+
+            if (pigmentosAsociados.Count != 0)
+                throw new AppValidationException($"El color {unColor.Nombre} no se puede eliminar porque tiene {pigmentosAsociados.Count} pigmentos asociados");
+
+            string nombreColorEliminado = unColor.Nombre!;
+
+            try
+            {
+                bool resultadoAccion = await _colorRepository
+                    .RemoveAsync(colorId);
+
+                if (!resultadoAccion)
+                    throw new DbOperationException("Operación ejecutada pero no generó cambios en la DB");
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return nombreColorEliminado;
+        }
 
         private static string EvaluateColorDetailsAsync(Color unColor)
         {
