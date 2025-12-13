@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using pigmentos.API.Exceptions;
+using pigmentos.API.Models;
 using pigmentos.API.Services;
 
 namespace pigmentos.API.Controllers.V1
@@ -65,6 +66,26 @@ namespace pigmentos.API.Controllers.V1
             catch (EmptyCollectionException error)
             {
                 return NotFound($"Error de validación: {error.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync(Color unColor)
+        {
+            try
+            {
+                var colorCreado = await _colorService
+                    .CreateAsync(unColor);
+
+                return Ok(colorCreado);
+            }
+            catch (AppValidationException error)
+            {
+                return BadRequest($"Error de validación: {error.Message}");
+            }
+            catch (DbOperationException error)
+            {
+                return BadRequest($"Error de operacion en DB: {error.Message}");
             }
         }
     }

@@ -48,5 +48,53 @@ namespace pigmentos.API.Services
 
             return pigmentosAsociados;
         }
+
+        public async Task<Color> CreateAsync(Color unColor)
+        {
+            unColor.Nombre = unColor.Nombre!.Trim();
+            unColor.RepresentacionHexadecimal = unColor.RepresentacionHexadecimal!.Trim();
+
+            string resultadoValidacion = EvaluateColorDetailsAsync(unColor);
+
+            if (!string.IsNullOrEmpty(resultadoValidacion))
+                throw new AppValidationException(resultadoValidacion);
+
+            var colorExistente = await _colorRepository
+                .GetByDetailsAsync(unColor);
+
+            if (colorExistente.Nombre == unColor.Nombre! &&
+                colorExistente.RepresentacionHexadecimal == unColor.RepresentacionHexadecimal)
+                return colorExistente;
+
+            try
+            {
+                bool resultadoAccion = await _colorRepository
+                    .CreateAsync(unColor);
+
+                if (!resultadoAccion)
+                    throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
+
+                colorExistente = await _colorRepository
+                .GetByDetailsAsync(unColor);
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return colorExistente;
+        }
+
+        private static string EvaluateColorDetailsAsync(Color unColor)
+        {
+            if (string.IsNullOrEmpty(unColor.Nombre))
+                return "No se puede insertar un tipo con nombre nulo";
+
+            if (string.IsNullOrEmpty(unColor.RepresentacionHexadecimal))
+                return "No se puede insertar un tipo con la representación hexadecimal nula.";
+
+            return string.Empty;
+        }
+
     }
 }

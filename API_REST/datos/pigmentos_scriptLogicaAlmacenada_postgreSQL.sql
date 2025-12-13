@@ -16,7 +16,7 @@
 
 -- p_inserta_color
 create or replace procedure core.p_inserta_color(
-                            in p_nombre                 text, 
+                            in p_nombre                 text,
                             in p_representacion_hex     text)
 language plpgsql as
 $$
@@ -36,7 +36,15 @@ $$
         where lower(p_nombre) = lower(nombre);
 
         if l_total_registros != 0  then
-            raise exception 'ya existe ese color registrado';
+            raise exception 'ya existe ese color registrado con ese nombre';
+        end if;
+
+        select count(id) into l_total_registros
+        from core.colores
+        where lower(p_representacion_hex) = lower(representacion_hexadecimal);
+
+        if l_total_registros != 0  then
+            raise exception 'ya existe ese color registrado con esa representación hexadecimal';
         end if;
 
         insert into core.colores (nombre,representacion_hexadecimal)
