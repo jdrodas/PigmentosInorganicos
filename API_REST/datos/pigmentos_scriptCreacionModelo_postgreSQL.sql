@@ -71,14 +71,14 @@ create view core.v_info_pigmentos as
     select distinct
         p.id pigmento_id,
         p.nombre pigmento_nombre,
-        p.formula_quimica,
-        p.numero_ci,
+        p.formula_quimica pigmento_formula_quimica,
+        p.numero_ci pigmento_numero_ci, 
         p.familia_quimica_id,
         fq.nombre familia_quimica_nombre,
         fq.composicion familia_quimica_composicion,
         p.color_id,
         c.nombre color_nombre,
-        c.representacion_hexadecimal
+        c.representacion_hexadecimal color_representacion_hexadecimal
 from core.pigmentos p
     join core.familias_quimicas fq on p.familia_quimica_id = fq.id
     join core.colores c on p.color_id = c.id
