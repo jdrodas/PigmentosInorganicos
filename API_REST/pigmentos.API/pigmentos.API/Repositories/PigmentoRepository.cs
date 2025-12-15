@@ -30,5 +30,28 @@ namespace pigmentos.API.Repositories
 
             return [.. resultadoPigmentos];
         }
+
+        public async Task<List<Pigmento>> GetAllByFamilyIdAsync(Guid familiaId)
+        {
+            var conexion = contextoDB.CreateConnection();
+
+            DynamicParameters parametrosSentencia = new();
+            parametrosSentencia.Add("@familiaId", familiaId,
+                                    DbType.Guid, ParameterDirection.Input);
+
+            string sentenciaSQL =
+                "SELECT DISTINCT  " +
+                "pigmento_id id, pigmento_nombre nombre, pigmento_formula_quimica formulaQuimica, " +
+                "pigmento_numero_ci numeroCi, familia_quimica_id familiaQuimicaId, color_id colorId " +
+                "FROM core.v_info_pigmentos " +
+                "WHERE familia_quimica_id = @familiaId " +
+                "ORDER BY pigmento_nombre";
+
+            var resultadoPigmentos = await conexion
+                .QueryAsync<Pigmento>(sentenciaSQL, parametrosSentencia);
+
+            return [.. resultadoPigmentos];
+        }
+
     }
 }

@@ -5,5 +5,6 @@ namespace pigmentos.API.Interfaces
     public interface IPigmentoRepository
     {
         public Task<List<Pigmento>> GetAllByColorIdAsync(Guid colorId);
+        public Task<List<Pigmento>> GetAllByFamilyIdAsync(Guid familiaId);
     }
 }

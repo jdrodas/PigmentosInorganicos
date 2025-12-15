@@ -63,8 +63,8 @@ namespace pigmentos.API.Repositories
             string sentenciaSQL =
                 "SELECT DISTINCT id, nombre, representacion_hexadecimal representacionHexadecimal " +
                 "FROM core.colores " +
-                "WHERE nombre = @colorNombre " +
-                "AND representacion_hexadecimal = @colorRepresentacionHexadecimal";
+                "WHERE LOWER(nombre) = LOWER(@colorNombre) " +
+                "AND LOWER(representacion_hexadecimal) = LOWER(@colorRepresentacionHexadecimal)";
 
 
             var resultado = await conexion

@@ -50,7 +50,7 @@ namespace pigmentos.API.Controllers.V1
         }
 
         [HttpGet("{colorId:Guid}/pigmentos")]
-        public async Task<IActionResult> GetAssociatedPlantsAsync(Guid colorId)
+        public async Task<IActionResult> GetAssociatedPigmentsAsync(Guid colorId)
         {
             try
             {
