@@ -112,5 +112,29 @@ namespace pigmentos.API.Controllers.V1
                 return BadRequest($"Error de operacion en DB: {error.Message}");
             }
         }
+
+        [HttpDelete("{familiaId:Guid}")]
+        public async Task<IActionResult> RemoveAsync(Guid familiaId)
+        {
+            try
+            {
+                var nombreFamiliaBorrada = await _familiaService
+                    .RemoveAsync(familiaId);
+
+                return Ok($"La familia {nombreFamiliaBorrada} fue eliminada correctamente!");
+            }
+            catch (AppValidationException error)
+            {
+                return BadRequest($"Error de validación: {error.Message}");
+            }
+            catch (EmptyCollectionException error)
+            {
+                return NotFound($"Error de validación: {error.Message}");
+            }
+            catch (DbOperationException error)
+            {
+                return BadRequest($"Error de operacion en DB: {error.Message}");
+            }
+        }
     }
 }

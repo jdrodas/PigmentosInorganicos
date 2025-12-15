@@ -123,6 +123,39 @@ namespace pigmentos.API.Services
             return familiaExistente;
         }
 
+        public async Task<string> RemoveAsync(Guid familiaId)
+        {
+            Familia unaFamilia = await _familiaRepository
+                .GetByIdAsync(familiaId);
+
+            if (unaFamilia.Id == Guid.Empty)
+                throw new EmptyCollectionException($"Familia ´química no encontrada con el id {familiaId}");
+
+            //Validar si el color tiene pigmentos asociados
+            var pigmentosAsociados = await _pigmentoRepository
+                .GetAllByFamilyIdAsync(familiaId);
+
+            if (pigmentosAsociados.Count != 0)
+                throw new AppValidationException($"La familia química {unaFamilia.Nombre} no se puede eliminar porque tiene {pigmentosAsociados.Count} pigmentos asociados");
+
+            string nombreFamiliaQuimicaEliminada = unaFamilia.Nombre!;
+
+            try
+            {
+                bool resultadoAccion = await _familiaRepository
+                    .RemoveAsync(familiaId);
+
+                if (!resultadoAccion)
+                    throw new DbOperationException("Operación ejecutada pero no generó cambios en la DB");
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return nombreFamiliaQuimicaEliminada;
+        }
+
         private static string EvaluateFamilyDetailsAsync(Familia unaFamilia)
         {
             if (string.IsNullOrEmpty(unaFamilia.Nombre))
