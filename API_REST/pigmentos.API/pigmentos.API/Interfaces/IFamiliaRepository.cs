@@ -7,5 +7,6 @@ namespace pigmentos.API.Interfaces
         public Task<List<Familia>> GetAllAsync();
         public Task<Familia> GetByIdAsync(Guid familiaId);
         public Task<Familia> GetByDetailsAsync(Familia familiaId);
+        public Task<bool> CreateAsync(Familia unaFamilia);
     }
 }

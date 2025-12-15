@@ -48,5 +48,52 @@ namespace pigmentos.API.Services
 
             return pigmentosAsociados;
         }
+
+        public async Task<Familia> CreateAsync(Familia unaFamilia)
+        {
+            unaFamilia.Nombre = unaFamilia.Nombre!.Trim();
+            unaFamilia.Composicion = unaFamilia.Composicion!.Trim();
+
+            string resultadoValidacion = EvaluateFamilyDetailsAsync(unaFamilia);
+
+            if (!string.IsNullOrEmpty(resultadoValidacion))
+                throw new AppValidationException(resultadoValidacion);
+
+            var familiaExistente = await _familiaRepository
+                .GetByDetailsAsync(unaFamilia);
+
+            if (familiaExistente.Nombre == unaFamilia.Nombre! &&
+                familiaExistente.Composicion == unaFamilia.Composicion)
+                return familiaExistente;
+
+            try
+            {
+                bool resultadoAccion = await _familiaRepository
+                    .CreateAsync(unaFamilia);
+
+                if (!resultadoAccion)
+                    throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
+
+                familiaExistente = await _familiaRepository
+                .GetByDetailsAsync(unaFamilia);
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return familiaExistente;
+        }
+
+        private static string EvaluateFamilyDetailsAsync(Familia unaFamilia)
+        {
+            if (string.IsNullOrEmpty(unaFamilia.Nombre))
+                return "No se puede insertar una familia química con nombre nulo";
+
+            if (string.IsNullOrEmpty(unaFamilia.Composicion))
+                return "No se puede insertar una familia química con la composición nula.";
+
+            return string.Empty;
+        }
     }
 }

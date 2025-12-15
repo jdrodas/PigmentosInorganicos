@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Npgsql;
 using pigmentos.API.DbContexts;
+using pigmentos.API.Exceptions;
 using pigmentos.API.Interfaces;
 using pigmentos.API.Models;
 using System.Data;
@@ -61,7 +63,7 @@ namespace pigmentos.API.Repositories
             string sentenciaSQL =
                 "SELECT DISTINCT id, nombre, composicion " +
                 "FROM core.familias_quimicas " +
-                "WHERE LOWER(nombr) = LOWER(@familiaNombre) " +
+                "WHERE LOWER(nombre) = LOWER(@familiaNombre) " +
                 "AND LOWER(composicion) = LOWER(@familiaComposicion)";
 
 
@@ -72,6 +74,37 @@ namespace pigmentos.API.Repositories
                 familiaExistente = resultado.First();
 
             return familiaExistente;
+        }
+
+        public async Task<bool> CreateAsync(Familia unaFamilia)
+        {
+            bool resultadoAccion = false;
+
+            try
+            {
+                var conexion = contextoDB.CreateConnection();
+
+                string procedimiento = "core.p_inserta_familia_quimica";
+                var parametros = new
+                {
+                    p_nombre = unaFamilia.Nombre,
+                    p_composicion = unaFamilia.Composicion
+                };
+
+                var cantidad_filas = await conexion.ExecuteAsync(
+                    procedimiento,
+                    parametros,
+                    commandType: CommandType.StoredProcedure);
+
+                if (cantidad_filas != 0)
+                    resultadoAccion = true;
+            }
+            catch (NpgsqlException error)
+            {
+                throw new DbOperationException(error.Message);
+            }
+
+            return resultadoAccion;
         }
     }
 }
