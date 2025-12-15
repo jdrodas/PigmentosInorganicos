@@ -150,7 +150,7 @@ $$
         where lower(p_nombre) = lower(nombre);
 
         if l_total_registros != 0  then
-            raise exception 'ya existe ese familia química registrada';
+            raise exception 'ya existe esa familia química registrada';
         end if;
 
         insert into core.familias_quimicas (nombre,composicion)
@@ -197,7 +197,7 @@ $$
         update core.familias_quimicas
         set
             nombre = initcap(p_nombre),
-            composicion = initcap(composicion)
+            composicion = initcap(p_composicion)
         where id = p_id;
     end;
 $$;

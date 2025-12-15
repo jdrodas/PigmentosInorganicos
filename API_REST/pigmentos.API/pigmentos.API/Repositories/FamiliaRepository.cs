@@ -106,5 +106,37 @@ namespace pigmentos.API.Repositories
 
             return resultadoAccion;
         }
+
+        public async Task<bool> UpdateAsync(Familia unaFamilia)
+        {
+            bool resultadoAccion = false;
+
+            try
+            {
+                var conexion = contextoDB.CreateConnection();
+
+                string procedimiento = "core.p_actualiza_familia_quimica";
+                var parametros = new
+                {
+                    p_id = unaFamilia.Id,
+                    p_nombre = unaFamilia.Nombre,
+                    p_composicion = unaFamilia.Composicion
+                };
+
+                var cantidad_filas = await conexion.ExecuteAsync(
+                    procedimiento,
+                    parametros,
+                    commandType: CommandType.StoredProcedure);
+
+                if (cantidad_filas != 0)
+                    resultadoAccion = true;
+            }
+            catch (NpgsqlException error)
+            {
+                throw new DbOperationException(error.Message);
+            }
+
+            return resultadoAccion;
+        }
     }
 }
