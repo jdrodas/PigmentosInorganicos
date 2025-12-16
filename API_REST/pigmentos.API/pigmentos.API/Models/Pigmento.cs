@@ -19,8 +19,20 @@ namespace pigmentos.API.Models
         [JsonPropertyName("color_id")]
         public Guid ColorId { get; set; } = Guid.Empty;
 
+        [JsonPropertyName("color_nombre")]
+        public string? ColorNombre { get; set; } = string.Empty;
+
+        [JsonPropertyName("color_representacion_hexadecimal")]
+        public string? ColorRepresentacionHexadecimal { get; set; } = string.Empty;
+
         [JsonPropertyName("familia_quimica_id")]
         public Guid FamiliaQuimicaId { get; set; } = Guid.Empty;
+
+        [JsonPropertyName("familia_quimica_nombre")]
+        public string? FamiliaQuimicaNombre { get; set; } = string.Empty;
+
+        [JsonPropertyName("familia_quimica_composicion")]
+        public string? FamiliaQuimicaComposicion { get; set; } = string.Empty;
 
         public override bool Equals(object? obj)
         {
