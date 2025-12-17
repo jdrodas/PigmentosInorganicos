@@ -92,5 +92,29 @@ namespace pigmentos.API.Controllers.V1
                 return BadRequest($"Error de operacion en DB: {error.Message}");
             }
         }
+
+        [HttpDelete("{pigmentoId:Guid}")]
+        public async Task<IActionResult> RemoveAsync(Guid pigmentoId)
+        {
+            try
+            {
+                var nombreColorBorrado = await _pigmentoService
+                    .RemoveAsync(pigmentoId);
+
+                return Ok($"El color {nombreColorBorrado} fue eliminado correctamente!");
+            }
+            catch (AppValidationException error)
+            {
+                return BadRequest($"Error de validación: {error.Message}");
+            }
+            catch (EmptyCollectionException error)
+            {
+                return NotFound($"Error de validación: {error.Message}");
+            }
+            catch (DbOperationException error)
+            {
+                return BadRequest($"Error de operacion en DB: {error.Message}");
+            }
+        }
     }
 }

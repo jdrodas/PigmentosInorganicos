@@ -131,7 +131,6 @@ namespace pigmentos.API.Services
             if (unColor.Id == Guid.Empty)
                 throw new EmptyCollectionException($"Color no encontrado con el id {colorId}");
 
-            //Validar si el color tiene pigmentos asociados
             var pigmentosAsociados = await _pigmentoRepository
                 .GetAllByColorIdAsync(colorId);
 

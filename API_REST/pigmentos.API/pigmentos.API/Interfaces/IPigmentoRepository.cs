@@ -11,5 +11,6 @@ namespace pigmentos.API.Interfaces
         public Task<List<Pigmento>> GetAllByFamilyIdAsync(Guid familiaId);
         public Task<bool> CreateAsync(Pigmento unPigmento);
         public Task<bool> UpdateAsync(Pigmento unPigmento);
+        public Task<bool> RemoveAsync(Guid pigmentoId);
     }
 }

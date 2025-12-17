@@ -131,7 +131,6 @@ namespace pigmentos.API.Services
             if (unaFamilia.Id == Guid.Empty)
                 throw new EmptyCollectionException($"Familia ´química no encontrada con el id {familiaId}");
 
-            //Validar si el color tiene pigmentos asociados
             var pigmentosAsociados = await _pigmentoRepository
                 .GetAllByFamilyIdAsync(familiaId);
 
