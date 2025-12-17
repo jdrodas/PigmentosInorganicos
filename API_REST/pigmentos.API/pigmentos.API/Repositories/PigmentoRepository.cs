@@ -165,5 +165,40 @@ namespace pigmentos.API.Repositories
 
             return resultadoAccion;
         }
+
+        public async Task<bool> UpdateAsync(Pigmento unPigmento)
+        {
+            bool resultadoAccion = false;
+
+            try
+            {
+                var conexion = contextoDB.CreateConnection();
+
+                string procedimiento = "core.p_actualiza_pigmento";
+                var parametros = new
+                {
+                    p_id = unPigmento.Id,
+                    p_nombre = unPigmento.Nombre,
+                    p_formula_quimica = unPigmento.FormulaQuimica,
+                    p_numero_ci = unPigmento.NumeroCi,
+                    p_familia_quimica_id = unPigmento.FamiliaQuimicaId,
+                    p_color_id = unPigmento.ColorId
+                };
+
+                var cantidad_filas = await conexion.ExecuteAsync(
+                    procedimiento,
+                    parametros,
+                    commandType: CommandType.StoredProcedure);
+
+                if (cantidad_filas != 0)
+                    resultadoAccion = true;
+            }
+            catch (NpgsqlException error)
+            {
+                throw new DbOperationException(error.Message);
+            }
+
+            return resultadoAccion;
+        }
     }
 }
