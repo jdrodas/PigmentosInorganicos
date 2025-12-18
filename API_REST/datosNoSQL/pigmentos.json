@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "69442105bb7c1a76d972e420"
+  },
+  "nombre": "Amarillo Cromo",
+  "formula_quimica": "PbCrO₄",
+  "numero_ci": "PY34",
+  "color_id": {
+    "$oid": "69441db6bb7c1a76d972e413"
+  },
+  "familia_quimica_id": {
+    "$oid": "69441e98bb7c1a76d972e41b"
+  }
+},
+{
+  "_id": {
+    "$oid": "69442105bb7c1a76d972e421"
+  },
+  "nombre": "Azul Cobalto",
+  "formula_quimica": "CoO·Al₂O₃",
+  "numero_ci": "PB28",
+  "color_id": {
+    "$oid": "69441db6bb7c1a76d972e414"
+  },
+  "familia_quimica_id": {
+    "$oid": "69441e98bb7c1a76d972e41d"
+  }
+},
+{
+  "_id": {
+    "$oid": "69442105bb7c1a76d972e422"
+  },
+  "nombre": "Azul Prusia",
+  "formula_quimica": "Fe₄[Fe(CN)₆]₃",
+  "numero_ci": "PB27",
+  "color_id": {
+    "$oid": "69441db6bb7c1a76d972e414"
+  },
+  "familia_quimica_id": {
+    "$oid": "69441e98bb7c1a76d972e41c"
+  }
+},
+{
+  "_id": {
+    "$oid": "69442105bb7c1a76d972e423"
+  },
+  "nombre": "Bermellón",
+  "formula_quimica": "HgS",
+  "numero_ci": "PR106",
+  "color_id": {
+    "$oid": "69441db6bb7c1a76d972e418"
+  },
+  "familia_quimica_id": {
+    "$oid": "69441e98bb7c1a76d972e41e"
+  }
+}]

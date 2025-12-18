@@ -1,0 +1,28 @@
+[{
+  "_id": {
+    "$oid": "69441e98bb7c1a76d972e41b"
+  },
+  "nombre": "Cromatos",
+  "composicion": "Sales del ácido crómico, conocidos por sus colores vibrantes"
+},
+{
+  "_id": {
+    "$oid": "69441e98bb7c1a76d972e41c"
+  },
+  "nombre": "Ferrocianuros",
+  "composicion": "Compuestos que contienen el ion ferrocianuro"
+},
+{
+  "_id": {
+    "$oid": "69441e98bb7c1a76d972e41d"
+  },
+  "nombre": "Óxidos",
+  "composicion": "Compuestos inorgánicos formados por la combinación de un elemento con oxígeno"
+},
+{
+  "_id": {
+    "$oid": "69441e98bb7c1a76d972e41e"
+  },
+  "nombre": "Sulfuros",
+  "composicion": "Compuestos químicos formados por azufre y otro elemento"
+}]
