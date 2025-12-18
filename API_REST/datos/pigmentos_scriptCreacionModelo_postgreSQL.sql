@@ -38,7 +38,7 @@ create table core.familias_quimicas
     composicion                     text not null
 );
 
-comment on table "familias_quimicas" is 'registro de los colores';
+comment on table "familias_quimicas" is 'Registro de las familias químicas';
 comment on column "familias_quimicas"."id" is 'identificador único de la familia química';
 comment on column "familias_quimicas"."nombre" is 'nombre de la familia química';
 comment on column "familias_quimicas"."composicion" is 'detalle de la composición de la familia química';
