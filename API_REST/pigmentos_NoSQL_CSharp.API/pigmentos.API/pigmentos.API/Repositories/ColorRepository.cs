@@ -71,5 +71,25 @@ namespace pigmentos.API.Repositories
             return colorExistente;
         }
 
+        public async Task<bool> CreateAsync(Color unColor)
+        {
+            bool resultadoAccion = false;
+
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccionColores = conexion
+                .GetCollection<Color>(contextoDB.ConfiguracionColecciones.ColeccionColores);
+
+            await coleccionColores
+                .InsertOneAsync(unColor);
+
+            var resultado = await GetByDetailsAsync(unColor);
+
+            if (resultado is not null)
+                resultadoAccion = true;
+
+            return resultadoAccion;
+        }
     }
 }
