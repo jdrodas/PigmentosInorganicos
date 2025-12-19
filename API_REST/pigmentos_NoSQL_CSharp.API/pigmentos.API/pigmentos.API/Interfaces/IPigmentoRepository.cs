@@ -1,0 +1,9 @@
+﻿using pigmentos.API.Models;
+
+namespace pigmentos.API.Interfaces
+{
+    public interface IPigmentoRepository
+    {
+        public Task<List<Pigmento>> GetAllByColorIdAsync(string colorId);
+    }
+}

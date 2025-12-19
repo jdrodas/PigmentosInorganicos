@@ -20,13 +20,15 @@ builder.Services.AddSingleton<MongoDbContext>();
 // ***************************************************************************
 
 builder.Services.AddScoped<IEstadisticaRepository, EstadisticaRepository>();
-
+builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<IPigmentoRepository, PigmentoRepository>();
 
 // ***************************************************************************
 // --- Configuración de los servicios asociados  --
 // ***************************************************************************
 
 builder.Services.AddScoped<EstadisticaService>();
+builder.Services.AddScoped<ColorService>();
 
 // Add services to the container.
 builder.Services.AddControllers()
