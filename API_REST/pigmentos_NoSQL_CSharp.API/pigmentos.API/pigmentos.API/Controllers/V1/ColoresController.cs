@@ -89,5 +89,29 @@ namespace pigmentos.API.Controllers.V1
             }
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(Color unColor)
+        {
+            try
+            {
+                var colorActualizado = await _colorService
+                    .UpdateAsync(unColor);
+
+                return Ok(colorActualizado);
+            }
+            catch (AppValidationException error)
+            {
+                return BadRequest($"Error de validación: {error.Message}");
+            }
+            catch (EmptyCollectionException error)
+            {
+                return NotFound($"Error de validación: {error.Message}");
+            }
+            catch (DbOperationException error)
+            {
+                return BadRequest($"Error de operacion en DB: {error.Message}");
+            }
+        }
+
     }
 }
