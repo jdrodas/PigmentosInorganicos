@@ -113,5 +113,29 @@ namespace pigmentos.API.Controllers.V1
             }
         }
 
+        [HttpDelete("{colorId:length(24)}")]
+        public async Task<IActionResult> RemoveAsync(string colorId)
+        {
+            try
+            {
+                var nombreColorBorrado = await _colorService
+                    .RemoveAsync(colorId);
+
+                return Ok($"El color {nombreColorBorrado} fue eliminado correctamente!");
+            }
+            catch (AppValidationException error)
+            {
+                return BadRequest($"Error de validación: {error.Message}");
+            }
+            catch (EmptyCollectionException error)
+            {
+                return NotFound($"Error de validación: {error.Message}");
+            }
+            catch (DbOperationException error)
+            {
+                return BadRequest($"Error de operacion en DB: {error.Message}");
+            }
+        }
+
     }
 }

@@ -9,5 +9,6 @@ namespace pigmentos.API.Interfaces
         public Task<Color> GetByDetailsAsync(Color unColor);
         public Task<bool> CreateAsync(Color unColor);
         public Task<bool> UpdateAsync(Color unColor);
+        public Task<bool> RemoveAsync(string colorId);
     }
 }
