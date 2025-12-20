@@ -88,5 +88,29 @@ namespace pigmentos.API.Controllers.V1
                 return BadRequest($"Error de operacion en DB: {error.Message}");
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(Familia unaFamilia)
+        {
+            try
+            {
+                var familiaActualizada = await _familiaService
+                    .UpdateAsync(unaFamilia);
+
+                return Ok(familiaActualizada);
+            }
+            catch (AppValidationException error)
+            {
+                return BadRequest($"Error de validación: {error.Message}");
+            }
+            catch (EmptyCollectionException error)
+            {
+                return NotFound($"Error de validación: {error.Message}");
+            }
+            catch (DbOperationException error)
+            {
+                return BadRequest($"Error de operacion en DB: {error.Message}");
+            }
+        }
     }
 }

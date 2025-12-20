@@ -85,6 +85,44 @@ namespace pigmentos.API.Services
             return familiaExistente;
         }
 
+        public async Task<Familia> UpdateAsync(Familia unaFamilia)
+        {
+            unaFamilia.Nombre = unaFamilia.Nombre!.Trim();
+            unaFamilia.Composicion = unaFamilia.Composicion!.Trim();
+
+            string resultadoValidacion = EvaluateFamilyDetailsAsync(unaFamilia);
+
+            if (!string.IsNullOrEmpty(resultadoValidacion))
+                throw new AppValidationException(resultadoValidacion);
+
+            var familiaExistente = await _familiaRepository
+                .GetByIdAsync(unaFamilia.Id);
+
+            if (familiaExistente.Id == string.Empty)
+                throw new EmptyCollectionException($"No existe una familia química con el Guid {unaFamilia.Id} que se pueda actualizar");
+
+            if (familiaExistente.Equals(unaFamilia))
+                return familiaExistente;
+
+            try
+            {
+                bool resultadoAccion = await _familiaRepository
+                    .UpdateAsync(unaFamilia);
+
+                if (!resultadoAccion)
+                    throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
+
+                familiaExistente = await _familiaRepository
+                    .GetByIdAsync(unaFamilia.Id);
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return familiaExistente;
+        }
+
         private static string EvaluateFamilyDetailsAsync(Familia unaFamilia)
         {
             if (string.IsNullOrEmpty(unaFamilia.Nombre))
