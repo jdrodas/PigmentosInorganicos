@@ -24,5 +24,21 @@ namespace pigmentos.API.Repositories
 
             return losPigmentos;
         }
+
+        public async Task<List<Pigmento>> GetAllByFamilyIdAsync(string familiaId)
+        {
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccionPigmentos = conexion
+                .GetCollection<Pigmento>(contextoDB.ConfiguracionColecciones.ColeccionPigmentos);
+
+            var losPigmentos = await coleccionPigmentos
+                .Find(pigmento => pigmento.FamiliaQuimicaId == familiaId)
+                .SortBy(pigmento => pigmento.Nombre)
+                .ToListAsync();
+
+            return losPigmentos;
+        }
     }
 }

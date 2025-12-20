@@ -21,6 +21,7 @@ builder.Services.AddSingleton<MongoDbContext>();
 
 builder.Services.AddScoped<IEstadisticaRepository, EstadisticaRepository>();
 builder.Services.AddScoped<IColorRepository, ColorRepository>();
+builder.Services.AddScoped<IFamiliaRepository, FamiliaRepository>();
 builder.Services.AddScoped<IPigmentoRepository, PigmentoRepository>();
 
 // ***************************************************************************
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IPigmentoRepository, PigmentoRepository>();
 
 builder.Services.AddScoped<EstadisticaService>();
 builder.Services.AddScoped<ColorService>();
+builder.Services.AddScoped<FamiliaService>();
 
 // Add services to the container.
 builder.Services.AddControllers()
