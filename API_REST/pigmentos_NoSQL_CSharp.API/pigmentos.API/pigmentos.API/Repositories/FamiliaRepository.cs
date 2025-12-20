@@ -70,5 +70,26 @@ namespace pigmentos.API.Repositories
 
             return familiaExistente;
         }
+
+        public async Task<bool> CreateAsync(Familia unaFmailia)
+        {
+            bool resultadoAccion = false;
+
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccioFamilias = conexion
+                .GetCollection<Familia>(contextoDB.ConfiguracionColecciones.ColeccionFamiliasQuimicas);
+
+            await coleccioFamilias
+                .InsertOneAsync(unaFmailia);
+
+            var resultado = await GetByDetailsAsync(unaFmailia);
+
+            if (resultado is not null)
+                resultadoAccion = true;
+
+            return resultadoAccion;
+        }
     }
 }
