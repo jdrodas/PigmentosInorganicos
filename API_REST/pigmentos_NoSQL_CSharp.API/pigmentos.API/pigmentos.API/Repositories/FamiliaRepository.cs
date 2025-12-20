@@ -45,7 +45,7 @@ namespace pigmentos.API.Repositories
             return unaFamilia;
         }
 
-        public async Task<Familia> GetByDetailsAsync(Familia unColor)
+        public async Task<Familia> GetByDetailsAsync(Familia unaFamilia)
         {
             Familia familiaExistente = new();
 
@@ -57,8 +57,8 @@ namespace pigmentos.API.Repositories
 
             var builder = Builders<Familia>.Filter;
             var filtro = builder.And(
-                builder.Regex(color => color.Nombre, $"/^{unColor.Nombre}$/i"),
-                builder.Regex(color => color.Composicion, $"/^{unColor.Composicion}$/i")
+                builder.Regex(familia => familia.Nombre, $"/^{unaFamilia.Nombre}$/i"),
+                builder.Regex(familia => familia.Composicion, $"/^{unaFamilia.Composicion}$/i")
                 );
 
             var resultado = await coleccioFamilias
@@ -71,7 +71,7 @@ namespace pigmentos.API.Repositories
             return familiaExistente;
         }
 
-        public async Task<bool> CreateAsync(Familia unaFmailia)
+        public async Task<bool> CreateAsync(Familia unaFamilia)
         {
             bool resultadoAccion = false;
 
@@ -82,9 +82,9 @@ namespace pigmentos.API.Repositories
                 .GetCollection<Familia>(contextoDB.ConfiguracionColecciones.ColeccionFamiliasQuimicas);
 
             await coleccioFamilias
-                .InsertOneAsync(unaFmailia);
+                .InsertOneAsync(unaFamilia);
 
-            var resultado = await GetByDetailsAsync(unaFmailia);
+            var resultado = await GetByDetailsAsync(unaFamilia);
 
             if (resultado is not null)
                 resultadoAccion = true;
@@ -92,7 +92,7 @@ namespace pigmentos.API.Repositories
             return resultadoAccion;
         }
 
-        public async Task<bool> UpdateAsync(Familia unaFmailia)
+        public async Task<bool> UpdateAsync(Familia unaFamilia)
         {
             bool resultadoAccion = false;
 
@@ -103,7 +103,26 @@ namespace pigmentos.API.Repositories
                 .GetCollection<Familia>(contextoDB.ConfiguracionColecciones.ColeccionFamiliasQuimicas);
 
             var resultado = await coleccioFamilias
-                .ReplaceOneAsync(color => color.Id == unaFmailia.Id, unaFmailia);
+                .ReplaceOneAsync(familia => familia.Id == unaFamilia.Id, unaFamilia);
+
+            if (resultado.IsAcknowledged)
+                resultadoAccion = true;
+
+            return resultadoAccion;
+        }
+
+        public async Task<bool> RemoveAsync(string familiaId)
+        {
+            bool resultadoAccion = false;
+
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccioFamilias = conexion
+                .GetCollection<Familia>(contextoDB.ConfiguracionColecciones.ColeccionFamiliasQuimicas);
+
+            var resultado = await coleccioFamilias
+                .DeleteOneAsync(familia => familia.Id == familiaId);
 
             if (resultado.IsAcknowledged)
                 resultadoAccion = true;

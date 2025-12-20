@@ -96,7 +96,7 @@ namespace pigmentos.API.Services
                 throw new AppValidationException(resultadoValidacion);
 
             var familiaExistente = await _familiaRepository
-                .GetByIdAsync(unaFamilia.Id);
+                .GetByIdAsync(unaFamilia.Id!);
 
             if (familiaExistente.Id == string.Empty)
                 throw new EmptyCollectionException($"No existe una familia química con el Guid {unaFamilia.Id} que se pueda actualizar");
@@ -113,7 +113,7 @@ namespace pigmentos.API.Services
                     throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
 
                 familiaExistente = await _familiaRepository
-                    .GetByIdAsync(unaFamilia.Id);
+                    .GetByIdAsync(unaFamilia.Id!);
             }
             catch (DbOperationException)
             {
@@ -121,6 +121,38 @@ namespace pigmentos.API.Services
             }
 
             return familiaExistente;
+        }
+
+        public async Task<string> RemoveAsync(string familiaId)
+        {
+            Familia unaFamilia = await _familiaRepository
+                .GetByIdAsync(familiaId);
+
+            if (unaFamilia.Id == string.Empty)
+                throw new EmptyCollectionException($"Familia ´química no encontrada con el id {familiaId}");
+
+            var pigmentosAsociados = await _pigmentoRepository
+                .GetAllByFamilyIdAsync(familiaId);
+
+            if (pigmentosAsociados.Count != 0)
+                throw new AppValidationException($"La familia química {unaFamilia.Nombre} no se puede eliminar porque tiene {pigmentosAsociados.Count} pigmentos asociados");
+
+            string nombreFamiliaQuimicaEliminada = unaFamilia.Nombre!;
+
+            try
+            {
+                bool resultadoAccion = await _familiaRepository
+                    .RemoveAsync(familiaId);
+
+                if (!resultadoAccion)
+                    throw new DbOperationException("Operación ejecutada pero no generó cambios en la DB");
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return nombreFamiliaQuimicaEliminada;
         }
 
         private static string EvaluateFamilyDetailsAsync(Familia unaFamilia)
