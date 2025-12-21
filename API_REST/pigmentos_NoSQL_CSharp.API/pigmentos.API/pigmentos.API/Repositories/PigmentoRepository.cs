@@ -9,6 +9,42 @@ namespace pigmentos.API.Repositories
     {
         private readonly MongoDbContext contextoDB = unContexto;
 
+        public async Task<List<Pigmento>> GetAllAsync()
+        {
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccionPigmentos = conexion
+                .GetCollection<Pigmento>(contextoDB.ConfiguracionColecciones.ColeccionPigmentos);
+
+            var losPigmentos = await coleccionPigmentos
+                .Find(_ => true)
+                .SortBy(pigmento => pigmento.Nombre)
+                .ToListAsync();
+
+            return losPigmentos;
+        }
+
+        public async Task<Pigmento> GetByIdAsync(string pigmentoId)
+        {
+            Pigmento unPigmento = new();
+
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccionPigmentos = conexion
+                .GetCollection<Pigmento>(contextoDB.ConfiguracionColecciones.ColeccionPigmentos);
+
+            var resultado = await coleccionPigmentos
+                .Find(pigmento => pigmento.Id == pigmentoId)
+                .FirstOrDefaultAsync();
+
+            if (resultado is not null)
+                unPigmento = resultado;
+
+            return unPigmento;
+        }
+
         public async Task<List<Pigmento>> GetAllByColorIdAsync(string colorId)
         {
             var conexion = contextoDB

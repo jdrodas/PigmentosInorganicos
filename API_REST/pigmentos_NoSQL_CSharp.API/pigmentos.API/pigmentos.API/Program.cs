@@ -31,6 +31,7 @@ builder.Services.AddScoped<IPigmentoRepository, PigmentoRepository>();
 builder.Services.AddScoped<EstadisticaService>();
 builder.Services.AddScoped<ColorService>();
 builder.Services.AddScoped<FamiliaService>();
+builder.Services.AddScoped<PigmentoService>();
 
 // Add services to the container.
 builder.Services.AddControllers()

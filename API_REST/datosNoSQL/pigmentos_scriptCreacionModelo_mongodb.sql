@@ -183,6 +183,40 @@ db.pigmentos.find().forEach(function(pigmento){
 }
 );
 
+-- Vinculamos información del color directamente en el documento de pigmentos
+db.pigmentos.find().forEach(function(pigmento){
+    let color = db.colores.findOne({_id:pigmento.color_id});
+
+    if (color){
+        db.pigmentos.updateOne(
+            {_id:pigmento._id},
+            {$set:{
+                "color_nombre": color.nombre,
+                "color_representacion_hexadecimal": color.representacion_hexadecimal
+                }
+            }
+        )
+    }
+}
+);
+
+-- Vinculamos información de la familia directamente en el documento de pigmentos
+db.pigmentos.find().forEach(function(pigmento){
+    let familia = db.familias_quimicas.findOne({_id:pigmento.familia_quimica_id});
+
+    if (familia){
+        db.pigmentos.updateOne(
+            {_id:pigmento._id},
+            {$set:{
+                "familia_quimica_nombre": familia.nombre,
+                "familia_quimica_composicion": familia.composicion
+                }
+            }
+        )
+    }
+}
+);
+
 -- Retirar campos no requeridos, en caso de que existan
 db.pigmentos.updateMany({}, { $unset: { color_id: "" } });
 db.pigmentos.updateMany({}, { $unset: { familia_quimica_id: "" } });

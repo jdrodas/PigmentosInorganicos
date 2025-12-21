@@ -21,7 +21,6 @@ namespace pigmentos.API.Models
         [BsonRepresentation(BsonType.String)]
         public string? FormulaQuimica { get; set; } = string.Empty;
 
-
         [JsonPropertyName("numero_ci")]
         [BsonElement("numero_ci")]
         [BsonRepresentation(BsonType.String)]
@@ -32,10 +31,30 @@ namespace pigmentos.API.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? ColorId { get; set; } = string.Empty;
 
+        [JsonPropertyName("color_nombre")]
+        [BsonElement("color_nombre")]
+        [BsonRepresentation(BsonType.String)]
+        public string? ColorNombre { get; set; } = string.Empty;
+
+        [JsonPropertyName("color_representacion_hexadecimal")]
+        [BsonElement("color_representacion_hexadecimal")]
+        [BsonRepresentation(BsonType.String)]
+        public string? ColorRepresentacionHexadecimal { get; set; } = string.Empty;
+
         [JsonPropertyName("familia_quimica_id")]
         [BsonElement("familia_quimica_id")]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? FamiliaQuimicaId { get; set; } = string.Empty;
+
+        [JsonPropertyName("familia_quimica_nombre")]
+        [BsonElement("familia_quimica_nombre")]
+        [BsonRepresentation(BsonType.String)]
+        public string? FamiliaQuimicaNombre { get; set; } = string.Empty;
+
+        [JsonPropertyName("familia_quimica_composicion")]
+        [BsonElement("familia_quimica_composicion")]
+        [BsonRepresentation(BsonType.String)]
+        public string? FamiliaQuimicaComposicion { get; set; } = string.Empty;
 
         public override bool Equals(object? obj)
         {
@@ -47,9 +66,7 @@ namespace pigmentos.API.Models
             return Id == otroPigmento.Id
                 && Nombre!.Equals(otroPigmento.Nombre)
                 && FormulaQuimica!.Equals(otroPigmento.FormulaQuimica)
-                && NumeroCi!.Equals(otroPigmento.NumeroCi)
-                && ColorId!.Equals(otroPigmento.ColorId)
-                && FamiliaQuimicaId!.Equals(otroPigmento.FamiliaQuimicaId);
+                && NumeroCi!.Equals(otroPigmento.NumeroCi);
         }
 
         public override int GetHashCode()
@@ -57,12 +74,10 @@ namespace pigmentos.API.Models
             unchecked
             {
                 int hash = 3;
-                hash = hash * 5 + (Id?.GetHashCode() ?? 0);
+                hash = hash * 5 + Id!.GetHashCode();
                 hash = hash * 5 + (Nombre?.GetHashCode() ?? 0);
                 hash = hash * 5 + (FormulaQuimica?.GetHashCode() ?? 0);
                 hash = hash * 5 + (NumeroCi?.GetHashCode() ?? 0);
-                hash = hash * 5 + (ColorId?.GetHashCode() ?? 0);
-                hash = hash * 5 + (FamiliaQuimicaId?.GetHashCode() ?? 0);
 
                 return hash;
             }
