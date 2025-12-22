@@ -143,5 +143,24 @@ namespace pigmentos.API.Repositories
 
             return resultadoAccion;
         }
+
+        public async Task<bool> RemoveAsync(string pigmentoId)
+        {
+            bool resultadoAccion = false;
+
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccionPigmentos = conexion
+                .GetCollection<Pigmento>(contextoDB.ConfiguracionColecciones.ColeccionPigmentos);
+
+            var resultado = await coleccionPigmentos
+                .DeleteOneAsync(pigmento => pigmento.Id == pigmentoId);
+
+            if (resultado.IsAcknowledged)
+                resultadoAccion = true;
+
+            return resultadoAccion;
+        }
     }
 }

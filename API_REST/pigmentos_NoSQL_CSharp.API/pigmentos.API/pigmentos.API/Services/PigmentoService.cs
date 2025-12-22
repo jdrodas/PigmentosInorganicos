@@ -129,6 +129,33 @@ namespace pigmentos.API.Services
             return pigmentoExistente;
         }
 
+        public async Task<string> RemoveAsync(string pigmentoId)
+        {
+            Pigmento unPigmento = await _pigmentoRepository
+                .GetByIdAsync(pigmentoId);
+
+            if (unPigmento.Id == string.Empty)
+                throw new EmptyCollectionException($"Pigmento no encontrado con el id {pigmentoId}");
+
+            string nombrePigmentoEliminado = unPigmento.Nombre!;
+
+            try
+            {
+                bool resultadoAccion = await _pigmentoRepository
+                    .RemoveAsync(pigmentoId);
+
+                if (!resultadoAccion)
+                    throw new DbOperationException("Operación ejecutada pero no generó cambios en la DB");
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return nombrePigmentoEliminado;
+        }
+
+
         private static string EvaluatePigmentDetailsAsync(Pigmento unPigmento)
         {
             if (string.IsNullOrEmpty(unPigmento.Nombre))
