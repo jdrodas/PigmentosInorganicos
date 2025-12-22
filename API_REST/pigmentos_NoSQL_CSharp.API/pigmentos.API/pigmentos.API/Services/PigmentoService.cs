@@ -1,7 +1,6 @@
 ﻿using pigmentos.API.Exceptions;
 using pigmentos.API.Interfaces;
 using pigmentos.API.Models;
-using pigmentos.API.Repositories;
 
 namespace pigmentos.API.Services
 {
@@ -82,6 +81,45 @@ namespace pigmentos.API.Services
 
                 pigmentoExistente = await _pigmentoRepository
                 .GetByDetailsAsync(unPigmento);
+            }
+            catch (DbOperationException)
+            {
+                throw;
+            }
+
+            return pigmentoExistente;
+        }
+
+        public async Task<Pigmento> UpdateAsync(Pigmento unPigmento)
+        {
+            unPigmento.Nombre = unPigmento.Nombre!.Trim();
+            unPigmento.FormulaQuimica = unPigmento.FormulaQuimica!.Trim();
+            unPigmento.NumeroCi = unPigmento.NumeroCi!.Trim();
+
+            string resultadoValidacion = EvaluatePigmentDetailsAsync(unPigmento);
+
+            if (!string.IsNullOrEmpty(resultadoValidacion))
+                throw new AppValidationException(resultadoValidacion);
+
+            var pigmentoExistente = await _pigmentoRepository
+                .GetByIdAsync(unPigmento.Id!);
+
+            if (pigmentoExistente.Id == string.Empty)
+                throw new EmptyCollectionException($"No existe un pigmento con el Guid {unPigmento.Id} que se pueda actualizar");
+
+            if (pigmentoExistente.Equals(unPigmento))
+                return pigmentoExistente;
+
+            try
+            {
+                bool resultadoAccion = await _pigmentoRepository
+                    .UpdateAsync(unPigmento);
+
+                if (!resultadoAccion)
+                    throw new AppValidationException("Operación ejecutada pero no generó cambios en la DB");
+
+                pigmentoExistente = await _pigmentoRepository
+                    .GetByIdAsync(unPigmento.Id!);
             }
             catch (DbOperationException)
             {

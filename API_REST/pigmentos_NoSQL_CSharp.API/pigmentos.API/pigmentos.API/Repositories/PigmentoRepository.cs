@@ -2,7 +2,6 @@
 using pigmentos.API.DbContexts;
 using pigmentos.API.Interfaces;
 using pigmentos.API.Models;
-using System.Drawing;
 
 namespace pigmentos.API.Repositories
 {
@@ -121,6 +120,25 @@ namespace pigmentos.API.Repositories
             var resultado = await GetByDetailsAsync(unPigmento);
 
             if (resultado is not null)
+                resultadoAccion = true;
+
+            return resultadoAccion;
+        }
+
+        public async Task<bool> UpdateAsync(Pigmento unPigmento)
+        {
+            bool resultadoAccion = false;
+
+            var conexion = contextoDB
+                .CreateConnection();
+
+            var coleccionPigmentos = conexion
+                .GetCollection<Pigmento>(contextoDB.ConfiguracionColecciones.ColeccionPigmentos);
+
+            var resultado = await coleccionPigmentos
+                .ReplaceOneAsync(pigmento => pigmento.Id == unPigmento.Id, unPigmento);
+
+            if (resultado.IsAcknowledged)
                 resultadoAccion = true;
 
             return resultadoAccion;

@@ -9,7 +9,7 @@ namespace pigmentos.API.Interfaces
         public Task<Pigmento> GetByDetailsAsync(Pigmento unPigmento);
         public Task<List<Pigmento>> GetAllByColorIdAsync(string colorId);
         public Task<List<Pigmento>> GetAllByFamilyIdAsync(string familiaId);
-
         public Task<bool> CreateAsync(Pigmento unPigmento);
+        public Task<bool> UpdateAsync(Pigmento unPigmento);
     }
 }
