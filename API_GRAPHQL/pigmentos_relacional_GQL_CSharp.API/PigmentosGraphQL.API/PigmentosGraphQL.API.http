@@ -1,0 +1,6 @@
+@PigmentosGraphQL.API_HostAddress = http://localhost:5068
+
+GET {{PigmentosGraphQL.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
